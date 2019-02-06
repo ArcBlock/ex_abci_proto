@@ -1,0 +1,21 @@
+language: elixir
+elixir: 1.8
+otp_release: 21.2.4
+branches:
+  only:
+  - master
+install:
+- epmd -daemon
+script: make travis
+before_script: make travis-init
+before_deploy: make travis-deploy
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure:
+  file_glob: true
+  file: src/_build/releases/*
+  on:
+    repo: ArcBlock/ex_abci_proto
+    branch: master

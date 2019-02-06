@@ -1,0 +1,13 @@
+syntax = "proto3";
+package core_grpc;
+
+import "vendor.proto";
+
+//----------------------------------------
+// Service Definition
+
+service BroadcastAPI {
+  rpc Ping(abci_vendor.RequestPing) returns (abci_vendor.ResponsePing);
+  rpc BroadcastTx(abci_vendor.RequestBroadcastTx)
+      returns (abci_vendor.ResponseBroadcastTx);
+}
