@@ -35,6 +35,7 @@ defmodule ExAbciProto.MixProject do
     [
       {:google_protos, "~> 0.1"},
       {:grpc, "~> 0.3"},
+      {:protobuf, github: "tony612/protobuf-elixir", branch: "decode-performance", override: true},
 
       # dev and test
       {:ex_doc, "~> 0.19.0", only: [:dev, :test], runtime: false}
