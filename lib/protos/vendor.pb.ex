@@ -12,34 +12,6 @@ defmodule AbciVendor.KVPair do
   field :value, 2, type: :bytes
 end
 
-defmodule AbciVendor.ProofOp do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          type: String.t(),
-          key: String.t(),
-          data: String.t()
-        }
-  defstruct [:type, :key, :data]
-
-  field :type, 1, type: :string
-  field :key, 2, type: :bytes
-  field :data, 3, type: :bytes
-end
-
-defmodule AbciVendor.Proof do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ops: [AbciVendor.ProofOp.t()]
-        }
-  defstruct [:ops]
-
-  field :ops, 1, repeated: true, type: AbciVendor.ProofOp
-end
-
 defmodule AbciVendor.BlockParams do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -285,93 +257,6 @@ defmodule AbciVendor.Header do
   field :proposer_address, 16, type: :bytes
 end
 
-defmodule AbciVendor.RequestEcho do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          message: String.t()
-        }
-  defstruct [:message]
-
-  field :message, 1, type: :string
-end
-
-defmodule AbciVendor.RequestFlush do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  defstruct []
-end
-
-defmodule AbciVendor.RequestInfo do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          version: String.t(),
-          block_version: non_neg_integer,
-          p2p_version: non_neg_integer
-        }
-  defstruct [:version, :block_version, :p2p_version]
-
-  field :version, 1, type: :string
-  field :block_version, 2, type: :uint64
-  field :p2p_version, 3, type: :uint64
-end
-
-defmodule AbciVendor.RequestSetOption do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          key: String.t(),
-          value: String.t()
-        }
-  defstruct [:key, :value]
-
-  field :key, 1, type: :string
-  field :value, 2, type: :string
-end
-
-defmodule AbciVendor.RequestInitChain do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          time: Google.Protobuf.Timestamp.t(),
-          chain_id: String.t(),
-          consensus_params: AbciVendor.ConsensusParams.t(),
-          validators: [AbciVendor.ValidatorUpdate.t()],
-          app_state_bytes: String.t()
-        }
-  defstruct [:time, :chain_id, :consensus_params, :validators, :app_state_bytes]
-
-  field :time, 1, type: Google.Protobuf.Timestamp
-  field :chain_id, 2, type: :string
-  field :consensus_params, 3, type: AbciVendor.ConsensusParams
-  field :validators, 4, repeated: true, type: AbciVendor.ValidatorUpdate
-  field :app_state_bytes, 5, type: :bytes
-end
-
-defmodule AbciVendor.RequestQuery do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          data: String.t(),
-          path: String.t(),
-          height: integer,
-          prove: boolean
-        }
-  defstruct [:data, :path, :height, :prove]
-
-  field :data, 1, type: :bytes
-  field :path, 2, type: :string
-  field :height, 3, type: :int64
-  field :prove, 4, type: :bool
-end
-
 defmodule AbciVendor.RequestBeginBlock do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -390,30 +275,6 @@ defmodule AbciVendor.RequestBeginBlock do
   field :byzantine_validators, 4, repeated: true, type: AbciVendor.Evidence
 end
 
-defmodule AbciVendor.RequestCheckTx do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          tx: String.t()
-        }
-  defstruct [:tx]
-
-  field :tx, 1, type: :bytes
-end
-
-defmodule AbciVendor.RequestDeliverTx do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          tx: String.t()
-        }
-  defstruct [:tx]
-
-  field :tx, 1, type: :bytes
-end
-
 defmodule AbciVendor.RequestEndBlock do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -426,145 +287,6 @@ defmodule AbciVendor.RequestEndBlock do
   field :height, 1, type: :int64
 end
 
-defmodule AbciVendor.RequestCommit do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  defstruct []
-end
-
-defmodule AbciVendor.Request do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          value: {atom, any}
-        }
-  defstruct [:value]
-
-  oneof :value, 0
-  field :echo, 2, type: AbciVendor.RequestEcho, oneof: 0
-  field :flush, 3, type: AbciVendor.RequestFlush, oneof: 0
-  field :info, 4, type: AbciVendor.RequestInfo, oneof: 0
-  field :set_option, 5, type: AbciVendor.RequestSetOption, oneof: 0
-  field :init_chain, 6, type: AbciVendor.RequestInitChain, oneof: 0
-  field :query, 7, type: AbciVendor.RequestQuery, oneof: 0
-  field :begin_block, 8, type: AbciVendor.RequestBeginBlock, oneof: 0
-  field :check_tx, 9, type: AbciVendor.RequestCheckTx, oneof: 0
-  field :deliver_tx, 19, type: AbciVendor.RequestDeliverTx, oneof: 0
-  field :end_block, 11, type: AbciVendor.RequestEndBlock, oneof: 0
-  field :commit, 12, type: AbciVendor.RequestCommit, oneof: 0
-end
-
-defmodule AbciVendor.ResponseException do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          error: String.t()
-        }
-  defstruct [:error]
-
-  field :error, 1, type: :string
-end
-
-defmodule AbciVendor.ResponseEcho do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          message: String.t()
-        }
-  defstruct [:message]
-
-  field :message, 1, type: :string
-end
-
-defmodule AbciVendor.ResponseFlush do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  defstruct []
-end
-
-defmodule AbciVendor.ResponseInfo do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          data: String.t(),
-          version: String.t(),
-          app_version: non_neg_integer,
-          last_block_height: integer,
-          last_block_app_hash: String.t()
-        }
-  defstruct [:data, :version, :app_version, :last_block_height, :last_block_app_hash]
-
-  field :data, 1, type: :string
-  field :version, 2, type: :string
-  field :app_version, 3, type: :uint64
-  field :last_block_height, 4, type: :int64
-  field :last_block_app_hash, 5, type: :bytes
-end
-
-defmodule AbciVendor.ResponseSetOption do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          code: non_neg_integer,
-          log: String.t(),
-          info: String.t()
-        }
-  defstruct [:code, :log, :info]
-
-  field :code, 1, type: :uint32
-  field :log, 3, type: :string
-  field :info, 4, type: :string
-end
-
-defmodule AbciVendor.ResponseInitChain do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          consensus_params: AbciVendor.ConsensusParams.t(),
-          validators: [AbciVendor.ValidatorUpdate.t()]
-        }
-  defstruct [:consensus_params, :validators]
-
-  field :consensus_params, 1, type: AbciVendor.ConsensusParams
-  field :validators, 2, repeated: true, type: AbciVendor.ValidatorUpdate
-end
-
-defmodule AbciVendor.ResponseQuery do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          code: non_neg_integer,
-          log: String.t(),
-          info: String.t(),
-          index: integer,
-          key: String.t(),
-          value: String.t(),
-          proof: AbciVendor.Proof.t(),
-          height: integer,
-          codespace: String.t()
-        }
-  defstruct [:code, :log, :info, :index, :key, :value, :proof, :height, :codespace]
-
-  field :code, 1, type: :uint32
-  field :log, 3, type: :string
-  field :info, 4, type: :string
-  field :index, 5, type: :int64
-  field :key, 6, type: :bytes
-  field :value, 7, type: :bytes
-  field :proof, 8, type: AbciVendor.Proof
-  field :height, 9, type: :int64
-  field :codespace, 10, type: :string
-end
-
 defmodule AbciVendor.ResponseBeginBlock do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -575,6 +297,22 @@ defmodule AbciVendor.ResponseBeginBlock do
   defstruct [:tags]
 
   field :tags, 1, repeated: true, type: AbciVendor.KVPair
+end
+
+defmodule AbciVendor.ResponseEndBlock do
+  @moduledoc false
+  use Protobuf, syntax: :proto3
+
+  @type t :: %__MODULE__{
+          validator_updates: [AbciVendor.ValidatorUpdate.t()],
+          consensus_param_updates: AbciVendor.ConsensusParams.t(),
+          tags: [AbciVendor.KVPair.t()]
+        }
+  defstruct [:validator_updates, :consensus_param_updates, :tags]
+
+  field :validator_updates, 1, repeated: true, type: AbciVendor.ValidatorUpdate
+  field :consensus_param_updates, 2, type: AbciVendor.ConsensusParams
+  field :tags, 3, repeated: true, type: AbciVendor.KVPair
 end
 
 defmodule AbciVendor.ResponseCheckTx do
@@ -629,58 +367,6 @@ defmodule AbciVendor.ResponseDeliverTx do
   field :codespace, 8, type: :string
 end
 
-defmodule AbciVendor.ResponseEndBlock do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          validator_updates: [AbciVendor.ValidatorUpdate.t()],
-          consensus_param_updates: AbciVendor.ConsensusParams.t(),
-          tags: [AbciVendor.KVPair.t()]
-        }
-  defstruct [:validator_updates, :consensus_param_updates, :tags]
-
-  field :validator_updates, 1, repeated: true, type: AbciVendor.ValidatorUpdate
-  field :consensus_param_updates, 2, type: AbciVendor.ConsensusParams
-  field :tags, 3, repeated: true, type: AbciVendor.KVPair
-end
-
-defmodule AbciVendor.ResponseCommit do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          data: String.t()
-        }
-  defstruct [:data]
-
-  field :data, 2, type: :bytes
-end
-
-defmodule AbciVendor.Response do
-  @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          value: {atom, any}
-        }
-  defstruct [:value]
-
-  oneof :value, 0
-  field :exception, 1, type: AbciVendor.ResponseException, oneof: 0
-  field :echo, 2, type: AbciVendor.ResponseEcho, oneof: 0
-  field :flush, 3, type: AbciVendor.ResponseFlush, oneof: 0
-  field :info, 4, type: AbciVendor.ResponseInfo, oneof: 0
-  field :set_option, 5, type: AbciVendor.ResponseSetOption, oneof: 0
-  field :init_chain, 6, type: AbciVendor.ResponseInitChain, oneof: 0
-  field :query, 7, type: AbciVendor.ResponseQuery, oneof: 0
-  field :begin_block, 8, type: AbciVendor.ResponseBeginBlock, oneof: 0
-  field :check_tx, 9, type: AbciVendor.ResponseCheckTx, oneof: 0
-  field :deliver_tx, 10, type: AbciVendor.ResponseDeliverTx, oneof: 0
-  field :end_block, 11, type: AbciVendor.ResponseEndBlock, oneof: 0
-  field :commit, 12, type: AbciVendor.ResponseCommit, oneof: 0
-end
-
 defmodule AbciVendor.RequestPing do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -719,26 +405,4 @@ defmodule AbciVendor.ResponseBroadcastTx do
 
   field :check_tx, 1, type: AbciVendor.ResponseCheckTx
   field :deliver_tx, 2, type: AbciVendor.ResponseDeliverTx
-end
-
-defmodule AbciVendor.ABCIApplication.Service do
-  @moduledoc false
-  use GRPC.Service, name: "abci_vendor.ABCIApplication"
-
-  rpc :Echo, AbciVendor.RequestEcho, AbciVendor.ResponseEcho
-  rpc :Flush, AbciVendor.RequestFlush, AbciVendor.ResponseFlush
-  rpc :Info, AbciVendor.RequestInfo, AbciVendor.ResponseInfo
-  rpc :SetOption, AbciVendor.RequestSetOption, AbciVendor.ResponseSetOption
-  rpc :DeliverTx, AbciVendor.RequestDeliverTx, AbciVendor.ResponseDeliverTx
-  rpc :CheckTx, AbciVendor.RequestCheckTx, AbciVendor.ResponseCheckTx
-  rpc :Query, AbciVendor.RequestQuery, AbciVendor.ResponseQuery
-  rpc :Commit, AbciVendor.RequestCommit, AbciVendor.ResponseCommit
-  rpc :InitChain, AbciVendor.RequestInitChain, AbciVendor.ResponseInitChain
-  rpc :BeginBlock, AbciVendor.RequestBeginBlock, AbciVendor.ResponseBeginBlock
-  rpc :EndBlock, AbciVendor.RequestEndBlock, AbciVendor.ResponseEndBlock
-end
-
-defmodule AbciVendor.ABCIApplication.Stub do
-  @moduledoc false
-  use GRPC.Stub, service: AbciVendor.ABCIApplication.Service
 end
