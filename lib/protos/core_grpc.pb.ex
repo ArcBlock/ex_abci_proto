@@ -2,8 +2,8 @@ defmodule CoreGrpc.BroadcastAPI.Service do
   @moduledoc false
   use GRPC.Service, name: "core_grpc.BroadcastAPI"
 
-  rpc :Ping, AbciVendor.RequestPing, AbciVendor.ResponsePing
-  rpc :BroadcastTx, AbciVendor.RequestBroadcastTx, AbciVendor.ResponseBroadcastTx
+  rpc(:Ping, AbciVendor.RequestPing, AbciVendor.ResponsePing)
+  rpc(:BroadcastTx, AbciVendor.RequestBroadcastTx, AbciVendor.ResponseBroadcastTx)
 end
 
 defmodule CoreGrpc.BroadcastAPI.Stub do

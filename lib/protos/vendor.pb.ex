@@ -8,8 +8,8 @@ defmodule AbciVendor.KVPair do
         }
   defstruct [:key, :value]
 
-  field :key, 1, type: :bytes
-  field :value, 2, type: :bytes
+  field(:key, 1, type: :bytes)
+  field(:value, 2, type: :bytes)
 end
 
 defmodule AbciVendor.ProofOp do
@@ -23,9 +23,9 @@ defmodule AbciVendor.ProofOp do
         }
   defstruct [:type, :key, :data]
 
-  field :type, 1, type: :string
-  field :key, 2, type: :bytes
-  field :data, 3, type: :bytes
+  field(:type, 1, type: :string)
+  field(:key, 2, type: :bytes)
+  field(:data, 3, type: :bytes)
 end
 
 defmodule AbciVendor.Proof do
@@ -37,7 +37,7 @@ defmodule AbciVendor.Proof do
         }
   defstruct [:ops]
 
-  field :ops, 1, repeated: true, type: AbciVendor.ProofOp
+  field(:ops, 1, repeated: true, type: AbciVendor.ProofOp)
 end
 
 defmodule AbciVendor.BlockParams do
@@ -50,8 +50,8 @@ defmodule AbciVendor.BlockParams do
         }
   defstruct [:max_bytes, :max_gas]
 
-  field :max_bytes, 1, type: :int64
-  field :max_gas, 2, type: :int64
+  field(:max_bytes, 1, type: :int64)
+  field(:max_gas, 2, type: :int64)
 end
 
 defmodule AbciVendor.EvidenceParams do
@@ -63,7 +63,7 @@ defmodule AbciVendor.EvidenceParams do
         }
   defstruct [:max_age]
 
-  field :max_age, 1, type: :int64
+  field(:max_age, 1, type: :int64)
 end
 
 defmodule AbciVendor.ValidatorParams do
@@ -75,7 +75,7 @@ defmodule AbciVendor.ValidatorParams do
         }
   defstruct [:pub_key_types]
 
-  field :pub_key_types, 1, repeated: true, type: :string
+  field(:pub_key_types, 1, repeated: true, type: :string)
 end
 
 defmodule AbciVendor.ConsensusParams do
@@ -89,9 +89,9 @@ defmodule AbciVendor.ConsensusParams do
         }
   defstruct [:block, :evidence, :validator]
 
-  field :block, 1, type: AbciVendor.BlockParams
-  field :evidence, 2, type: AbciVendor.EvidenceParams
-  field :validator, 3, type: AbciVendor.ValidatorParams
+  field(:block, 1, type: AbciVendor.BlockParams)
+  field(:evidence, 2, type: AbciVendor.EvidenceParams)
+  field(:validator, 3, type: AbciVendor.ValidatorParams)
 end
 
 defmodule AbciVendor.LastCommitInfo do
@@ -104,8 +104,8 @@ defmodule AbciVendor.LastCommitInfo do
         }
   defstruct [:round, :votes]
 
-  field :round, 1, type: :int32
-  field :votes, 2, repeated: true, type: AbciVendor.VoteInfo
+  field(:round, 1, type: :int32)
+  field(:votes, 2, repeated: true, type: AbciVendor.VoteInfo)
 end
 
 defmodule AbciVendor.Version do
@@ -118,8 +118,8 @@ defmodule AbciVendor.Version do
         }
   defstruct [:Block, :App]
 
-  field :Block, 1, type: :uint64
-  field :App, 2, type: :uint64
+  field(:Block, 1, type: :uint64)
+  field(:App, 2, type: :uint64)
 end
 
 defmodule AbciVendor.BlockID do
@@ -132,8 +132,8 @@ defmodule AbciVendor.BlockID do
         }
   defstruct [:hash, :parts_header]
 
-  field :hash, 1, type: :bytes
-  field :parts_header, 2, type: AbciVendor.PartSetHeader
+  field(:hash, 1, type: :bytes)
+  field(:parts_header, 2, type: AbciVendor.PartSetHeader)
 end
 
 defmodule AbciVendor.PartSetHeader do
@@ -146,8 +146,8 @@ defmodule AbciVendor.PartSetHeader do
         }
   defstruct [:total, :hash]
 
-  field :total, 1, type: :int32
-  field :hash, 2, type: :bytes
+  field(:total, 1, type: :int32)
+  field(:hash, 2, type: :bytes)
 end
 
 defmodule AbciVendor.Validator do
@@ -160,8 +160,8 @@ defmodule AbciVendor.Validator do
         }
   defstruct [:address, :power]
 
-  field :address, 1, type: :bytes
-  field :power, 3, type: :int64
+  field(:address, 1, type: :bytes)
+  field(:power, 3, type: :int64)
 end
 
 defmodule AbciVendor.ValidatorUpdate do
@@ -174,8 +174,8 @@ defmodule AbciVendor.ValidatorUpdate do
         }
   defstruct [:pub_key, :power]
 
-  field :pub_key, 1, type: AbciVendor.PubKey
-  field :power, 2, type: :int64
+  field(:pub_key, 1, type: AbciVendor.PubKey)
+  field(:power, 2, type: :int64)
 end
 
 defmodule AbciVendor.VoteInfo do
@@ -188,8 +188,8 @@ defmodule AbciVendor.VoteInfo do
         }
   defstruct [:validator, :signed_last_block]
 
-  field :validator, 1, type: AbciVendor.Validator
-  field :signed_last_block, 2, type: :bool
+  field(:validator, 1, type: AbciVendor.Validator)
+  field(:signed_last_block, 2, type: :bool)
 end
 
 defmodule AbciVendor.PubKey do
@@ -202,8 +202,8 @@ defmodule AbciVendor.PubKey do
         }
   defstruct [:type, :data]
 
-  field :type, 1, type: :string
-  field :data, 2, type: :bytes
+  field(:type, 1, type: :string)
+  field(:data, 2, type: :bytes)
 end
 
 defmodule AbciVendor.Evidence do
@@ -219,11 +219,11 @@ defmodule AbciVendor.Evidence do
         }
   defstruct [:type, :validator, :height, :time, :total_voting_power]
 
-  field :type, 1, type: :string
-  field :validator, 2, type: AbciVendor.Validator
-  field :height, 3, type: :int64
-  field :time, 4, type: Google.Protobuf.Timestamp
-  field :total_voting_power, 5, type: :int64
+  field(:type, 1, type: :string)
+  field(:validator, 2, type: AbciVendor.Validator)
+  field(:height, 3, type: :int64)
+  field(:time, 4, type: Google.Protobuf.Timestamp)
+  field(:total_voting_power, 5, type: :int64)
 end
 
 defmodule AbciVendor.Header do
@@ -267,22 +267,22 @@ defmodule AbciVendor.Header do
     :proposer_address
   ]
 
-  field :version, 1, type: AbciVendor.Version
-  field :chain_id, 2, type: :string
-  field :height, 3, type: :int64
-  field :time, 4, type: Google.Protobuf.Timestamp
-  field :num_txs, 5, type: :int64
-  field :total_txs, 6, type: :int64
-  field :last_block_id, 7, type: AbciVendor.BlockID
-  field :last_commit_hash, 8, type: :bytes
-  field :data_hash, 9, type: :bytes
-  field :validators_hash, 10, type: :bytes
-  field :next_validators_hash, 11, type: :bytes
-  field :consensus_hash, 12, type: :bytes
-  field :app_hash, 13, type: :bytes
-  field :last_results_hash, 14, type: :bytes
-  field :evidence_hash, 15, type: :bytes
-  field :proposer_address, 16, type: :bytes
+  field(:version, 1, type: AbciVendor.Version)
+  field(:chain_id, 2, type: :string)
+  field(:height, 3, type: :int64)
+  field(:time, 4, type: Google.Protobuf.Timestamp)
+  field(:num_txs, 5, type: :int64)
+  field(:total_txs, 6, type: :int64)
+  field(:last_block_id, 7, type: AbciVendor.BlockID)
+  field(:last_commit_hash, 8, type: :bytes)
+  field(:data_hash, 9, type: :bytes)
+  field(:validators_hash, 10, type: :bytes)
+  field(:next_validators_hash, 11, type: :bytes)
+  field(:consensus_hash, 12, type: :bytes)
+  field(:app_hash, 13, type: :bytes)
+  field(:last_results_hash, 14, type: :bytes)
+  field(:evidence_hash, 15, type: :bytes)
+  field(:proposer_address, 16, type: :bytes)
 end
 
 defmodule AbciVendor.RequestEcho do
@@ -294,7 +294,7 @@ defmodule AbciVendor.RequestEcho do
         }
   defstruct [:message]
 
-  field :message, 1, type: :string
+  field(:message, 1, type: :string)
 end
 
 defmodule AbciVendor.RequestFlush do
@@ -315,9 +315,9 @@ defmodule AbciVendor.RequestInfo do
         }
   defstruct [:version, :block_version, :p2p_version]
 
-  field :version, 1, type: :string
-  field :block_version, 2, type: :uint64
-  field :p2p_version, 3, type: :uint64
+  field(:version, 1, type: :string)
+  field(:block_version, 2, type: :uint64)
+  field(:p2p_version, 3, type: :uint64)
 end
 
 defmodule AbciVendor.RequestSetOption do
@@ -330,8 +330,8 @@ defmodule AbciVendor.RequestSetOption do
         }
   defstruct [:key, :value]
 
-  field :key, 1, type: :string
-  field :value, 2, type: :string
+  field(:key, 1, type: :string)
+  field(:value, 2, type: :string)
 end
 
 defmodule AbciVendor.RequestInitChain do
@@ -347,11 +347,11 @@ defmodule AbciVendor.RequestInitChain do
         }
   defstruct [:time, :chain_id, :consensus_params, :validators, :app_state_bytes]
 
-  field :time, 1, type: Google.Protobuf.Timestamp
-  field :chain_id, 2, type: :string
-  field :consensus_params, 3, type: AbciVendor.ConsensusParams
-  field :validators, 4, repeated: true, type: AbciVendor.ValidatorUpdate
-  field :app_state_bytes, 5, type: :bytes
+  field(:time, 1, type: Google.Protobuf.Timestamp)
+  field(:chain_id, 2, type: :string)
+  field(:consensus_params, 3, type: AbciVendor.ConsensusParams)
+  field(:validators, 4, repeated: true, type: AbciVendor.ValidatorUpdate)
+  field(:app_state_bytes, 5, type: :bytes)
 end
 
 defmodule AbciVendor.RequestQuery do
@@ -366,10 +366,10 @@ defmodule AbciVendor.RequestQuery do
         }
   defstruct [:data, :path, :height, :prove]
 
-  field :data, 1, type: :bytes
-  field :path, 2, type: :string
-  field :height, 3, type: :int64
-  field :prove, 4, type: :bool
+  field(:data, 1, type: :bytes)
+  field(:path, 2, type: :string)
+  field(:height, 3, type: :int64)
+  field(:prove, 4, type: :bool)
 end
 
 defmodule AbciVendor.RequestBeginBlock do
@@ -384,10 +384,10 @@ defmodule AbciVendor.RequestBeginBlock do
         }
   defstruct [:hash, :header, :last_commit_info, :byzantine_validators]
 
-  field :hash, 1, type: :bytes
-  field :header, 2, type: AbciVendor.Header
-  field :last_commit_info, 3, type: AbciVendor.LastCommitInfo
-  field :byzantine_validators, 4, repeated: true, type: AbciVendor.Evidence
+  field(:hash, 1, type: :bytes)
+  field(:header, 2, type: AbciVendor.Header)
+  field(:last_commit_info, 3, type: AbciVendor.LastCommitInfo)
+  field(:byzantine_validators, 4, repeated: true, type: AbciVendor.Evidence)
 end
 
 defmodule AbciVendor.RequestCheckTx do
@@ -399,7 +399,7 @@ defmodule AbciVendor.RequestCheckTx do
         }
   defstruct [:tx]
 
-  field :tx, 1, type: :bytes
+  field(:tx, 1, type: :bytes)
 end
 
 defmodule AbciVendor.RequestDeliverTx do
@@ -411,7 +411,7 @@ defmodule AbciVendor.RequestDeliverTx do
         }
   defstruct [:tx]
 
-  field :tx, 1, type: :bytes
+  field(:tx, 1, type: :bytes)
 end
 
 defmodule AbciVendor.RequestEndBlock do
@@ -423,7 +423,7 @@ defmodule AbciVendor.RequestEndBlock do
         }
   defstruct [:height]
 
-  field :height, 1, type: :int64
+  field(:height, 1, type: :int64)
 end
 
 defmodule AbciVendor.RequestCommit do
@@ -442,18 +442,18 @@ defmodule AbciVendor.Request do
         }
   defstruct [:value]
 
-  oneof :value, 0
-  field :echo, 2, type: AbciVendor.RequestEcho, oneof: 0
-  field :flush, 3, type: AbciVendor.RequestFlush, oneof: 0
-  field :info, 4, type: AbciVendor.RequestInfo, oneof: 0
-  field :set_option, 5, type: AbciVendor.RequestSetOption, oneof: 0
-  field :init_chain, 6, type: AbciVendor.RequestInitChain, oneof: 0
-  field :query, 7, type: AbciVendor.RequestQuery, oneof: 0
-  field :begin_block, 8, type: AbciVendor.RequestBeginBlock, oneof: 0
-  field :check_tx, 9, type: AbciVendor.RequestCheckTx, oneof: 0
-  field :deliver_tx, 19, type: AbciVendor.RequestDeliverTx, oneof: 0
-  field :end_block, 11, type: AbciVendor.RequestEndBlock, oneof: 0
-  field :commit, 12, type: AbciVendor.RequestCommit, oneof: 0
+  oneof(:value, 0)
+  field(:echo, 2, type: AbciVendor.RequestEcho, oneof: 0)
+  field(:flush, 3, type: AbciVendor.RequestFlush, oneof: 0)
+  field(:info, 4, type: AbciVendor.RequestInfo, oneof: 0)
+  field(:set_option, 5, type: AbciVendor.RequestSetOption, oneof: 0)
+  field(:init_chain, 6, type: AbciVendor.RequestInitChain, oneof: 0)
+  field(:query, 7, type: AbciVendor.RequestQuery, oneof: 0)
+  field(:begin_block, 8, type: AbciVendor.RequestBeginBlock, oneof: 0)
+  field(:check_tx, 9, type: AbciVendor.RequestCheckTx, oneof: 0)
+  field(:deliver_tx, 19, type: AbciVendor.RequestDeliverTx, oneof: 0)
+  field(:end_block, 11, type: AbciVendor.RequestEndBlock, oneof: 0)
+  field(:commit, 12, type: AbciVendor.RequestCommit, oneof: 0)
 end
 
 defmodule AbciVendor.ResponseException do
@@ -465,7 +465,7 @@ defmodule AbciVendor.ResponseException do
         }
   defstruct [:error]
 
-  field :error, 1, type: :string
+  field(:error, 1, type: :string)
 end
 
 defmodule AbciVendor.ResponseEcho do
@@ -477,7 +477,7 @@ defmodule AbciVendor.ResponseEcho do
         }
   defstruct [:message]
 
-  field :message, 1, type: :string
+  field(:message, 1, type: :string)
 end
 
 defmodule AbciVendor.ResponseFlush do
@@ -500,11 +500,11 @@ defmodule AbciVendor.ResponseInfo do
         }
   defstruct [:data, :version, :app_version, :last_block_height, :last_block_app_hash]
 
-  field :data, 1, type: :string
-  field :version, 2, type: :string
-  field :app_version, 3, type: :uint64
-  field :last_block_height, 4, type: :int64
-  field :last_block_app_hash, 5, type: :bytes
+  field(:data, 1, type: :string)
+  field(:version, 2, type: :string)
+  field(:app_version, 3, type: :uint64)
+  field(:last_block_height, 4, type: :int64)
+  field(:last_block_app_hash, 5, type: :bytes)
 end
 
 defmodule AbciVendor.ResponseSetOption do
@@ -518,9 +518,9 @@ defmodule AbciVendor.ResponseSetOption do
         }
   defstruct [:code, :log, :info]
 
-  field :code, 1, type: :uint32
-  field :log, 3, type: :string
-  field :info, 4, type: :string
+  field(:code, 1, type: :uint32)
+  field(:log, 3, type: :string)
+  field(:info, 4, type: :string)
 end
 
 defmodule AbciVendor.ResponseInitChain do
@@ -533,8 +533,8 @@ defmodule AbciVendor.ResponseInitChain do
         }
   defstruct [:consensus_params, :validators]
 
-  field :consensus_params, 1, type: AbciVendor.ConsensusParams
-  field :validators, 2, repeated: true, type: AbciVendor.ValidatorUpdate
+  field(:consensus_params, 1, type: AbciVendor.ConsensusParams)
+  field(:validators, 2, repeated: true, type: AbciVendor.ValidatorUpdate)
 end
 
 defmodule AbciVendor.ResponseQuery do
@@ -554,15 +554,15 @@ defmodule AbciVendor.ResponseQuery do
         }
   defstruct [:code, :log, :info, :index, :key, :value, :proof, :height, :codespace]
 
-  field :code, 1, type: :uint32
-  field :log, 3, type: :string
-  field :info, 4, type: :string
-  field :index, 5, type: :int64
-  field :key, 6, type: :bytes
-  field :value, 7, type: :bytes
-  field :proof, 8, type: AbciVendor.Proof
-  field :height, 9, type: :int64
-  field :codespace, 10, type: :string
+  field(:code, 1, type: :uint32)
+  field(:log, 3, type: :string)
+  field(:info, 4, type: :string)
+  field(:index, 5, type: :int64)
+  field(:key, 6, type: :bytes)
+  field(:value, 7, type: :bytes)
+  field(:proof, 8, type: AbciVendor.Proof)
+  field(:height, 9, type: :int64)
+  field(:codespace, 10, type: :string)
 end
 
 defmodule AbciVendor.ResponseBeginBlock do
@@ -574,7 +574,7 @@ defmodule AbciVendor.ResponseBeginBlock do
         }
   defstruct [:tags]
 
-  field :tags, 1, repeated: true, type: AbciVendor.KVPair
+  field(:tags, 1, repeated: true, type: AbciVendor.KVPair)
 end
 
 defmodule AbciVendor.ResponseCheckTx do
@@ -593,14 +593,14 @@ defmodule AbciVendor.ResponseCheckTx do
         }
   defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :tags, :codespace]
 
-  field :code, 1, type: :uint32
-  field :data, 2, type: :bytes
-  field :log, 3, type: :string
-  field :info, 4, type: :string
-  field :gas_wanted, 5, type: :int64
-  field :gas_used, 6, type: :int64
-  field :tags, 7, repeated: true, type: AbciVendor.KVPair
-  field :codespace, 8, type: :string
+  field(:code, 1, type: :uint32)
+  field(:data, 2, type: :bytes)
+  field(:log, 3, type: :string)
+  field(:info, 4, type: :string)
+  field(:gas_wanted, 5, type: :int64)
+  field(:gas_used, 6, type: :int64)
+  field(:tags, 7, repeated: true, type: AbciVendor.KVPair)
+  field(:codespace, 8, type: :string)
 end
 
 defmodule AbciVendor.ResponseDeliverTx do
@@ -619,14 +619,14 @@ defmodule AbciVendor.ResponseDeliverTx do
         }
   defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :tags, :codespace]
 
-  field :code, 1, type: :uint32
-  field :data, 2, type: :bytes
-  field :log, 3, type: :string
-  field :info, 4, type: :string
-  field :gas_wanted, 5, type: :int64
-  field :gas_used, 6, type: :int64
-  field :tags, 7, repeated: true, type: AbciVendor.KVPair
-  field :codespace, 8, type: :string
+  field(:code, 1, type: :uint32)
+  field(:data, 2, type: :bytes)
+  field(:log, 3, type: :string)
+  field(:info, 4, type: :string)
+  field(:gas_wanted, 5, type: :int64)
+  field(:gas_used, 6, type: :int64)
+  field(:tags, 7, repeated: true, type: AbciVendor.KVPair)
+  field(:codespace, 8, type: :string)
 end
 
 defmodule AbciVendor.ResponseEndBlock do
@@ -640,9 +640,9 @@ defmodule AbciVendor.ResponseEndBlock do
         }
   defstruct [:validator_updates, :consensus_param_updates, :tags]
 
-  field :validator_updates, 1, repeated: true, type: AbciVendor.ValidatorUpdate
-  field :consensus_param_updates, 2, type: AbciVendor.ConsensusParams
-  field :tags, 3, repeated: true, type: AbciVendor.KVPair
+  field(:validator_updates, 1, repeated: true, type: AbciVendor.ValidatorUpdate)
+  field(:consensus_param_updates, 2, type: AbciVendor.ConsensusParams)
+  field(:tags, 3, repeated: true, type: AbciVendor.KVPair)
 end
 
 defmodule AbciVendor.ResponseCommit do
@@ -654,7 +654,7 @@ defmodule AbciVendor.ResponseCommit do
         }
   defstruct [:data]
 
-  field :data, 2, type: :bytes
+  field(:data, 2, type: :bytes)
 end
 
 defmodule AbciVendor.Response do
@@ -666,19 +666,19 @@ defmodule AbciVendor.Response do
         }
   defstruct [:value]
 
-  oneof :value, 0
-  field :exception, 1, type: AbciVendor.ResponseException, oneof: 0
-  field :echo, 2, type: AbciVendor.ResponseEcho, oneof: 0
-  field :flush, 3, type: AbciVendor.ResponseFlush, oneof: 0
-  field :info, 4, type: AbciVendor.ResponseInfo, oneof: 0
-  field :set_option, 5, type: AbciVendor.ResponseSetOption, oneof: 0
-  field :init_chain, 6, type: AbciVendor.ResponseInitChain, oneof: 0
-  field :query, 7, type: AbciVendor.ResponseQuery, oneof: 0
-  field :begin_block, 8, type: AbciVendor.ResponseBeginBlock, oneof: 0
-  field :check_tx, 9, type: AbciVendor.ResponseCheckTx, oneof: 0
-  field :deliver_tx, 10, type: AbciVendor.ResponseDeliverTx, oneof: 0
-  field :end_block, 11, type: AbciVendor.ResponseEndBlock, oneof: 0
-  field :commit, 12, type: AbciVendor.ResponseCommit, oneof: 0
+  oneof(:value, 0)
+  field(:exception, 1, type: AbciVendor.ResponseException, oneof: 0)
+  field(:echo, 2, type: AbciVendor.ResponseEcho, oneof: 0)
+  field(:flush, 3, type: AbciVendor.ResponseFlush, oneof: 0)
+  field(:info, 4, type: AbciVendor.ResponseInfo, oneof: 0)
+  field(:set_option, 5, type: AbciVendor.ResponseSetOption, oneof: 0)
+  field(:init_chain, 6, type: AbciVendor.ResponseInitChain, oneof: 0)
+  field(:query, 7, type: AbciVendor.ResponseQuery, oneof: 0)
+  field(:begin_block, 8, type: AbciVendor.ResponseBeginBlock, oneof: 0)
+  field(:check_tx, 9, type: AbciVendor.ResponseCheckTx, oneof: 0)
+  field(:deliver_tx, 10, type: AbciVendor.ResponseDeliverTx, oneof: 0)
+  field(:end_block, 11, type: AbciVendor.ResponseEndBlock, oneof: 0)
+  field(:commit, 12, type: AbciVendor.ResponseCommit, oneof: 0)
 end
 
 defmodule AbciVendor.RequestPing do
@@ -697,7 +697,7 @@ defmodule AbciVendor.RequestBroadcastTx do
         }
   defstruct [:tx]
 
-  field :tx, 1, type: :bytes
+  field(:tx, 1, type: :bytes)
 end
 
 defmodule AbciVendor.ResponsePing do
@@ -717,25 +717,25 @@ defmodule AbciVendor.ResponseBroadcastTx do
         }
   defstruct [:check_tx, :deliver_tx]
 
-  field :check_tx, 1, type: AbciVendor.ResponseCheckTx
-  field :deliver_tx, 2, type: AbciVendor.ResponseDeliverTx
+  field(:check_tx, 1, type: AbciVendor.ResponseCheckTx)
+  field(:deliver_tx, 2, type: AbciVendor.ResponseDeliverTx)
 end
 
 defmodule AbciVendor.ABCIApplication.Service do
   @moduledoc false
   use GRPC.Service, name: "abci_vendor.ABCIApplication"
 
-  rpc :Echo, AbciVendor.RequestEcho, AbciVendor.ResponseEcho
-  rpc :Flush, AbciVendor.RequestFlush, AbciVendor.ResponseFlush
-  rpc :Info, AbciVendor.RequestInfo, AbciVendor.ResponseInfo
-  rpc :SetOption, AbciVendor.RequestSetOption, AbciVendor.ResponseSetOption
-  rpc :DeliverTx, AbciVendor.RequestDeliverTx, AbciVendor.ResponseDeliverTx
-  rpc :CheckTx, AbciVendor.RequestCheckTx, AbciVendor.ResponseCheckTx
-  rpc :Query, AbciVendor.RequestQuery, AbciVendor.ResponseQuery
-  rpc :Commit, AbciVendor.RequestCommit, AbciVendor.ResponseCommit
-  rpc :InitChain, AbciVendor.RequestInitChain, AbciVendor.ResponseInitChain
-  rpc :BeginBlock, AbciVendor.RequestBeginBlock, AbciVendor.ResponseBeginBlock
-  rpc :EndBlock, AbciVendor.RequestEndBlock, AbciVendor.ResponseEndBlock
+  rpc(:Echo, AbciVendor.RequestEcho, AbciVendor.ResponseEcho)
+  rpc(:Flush, AbciVendor.RequestFlush, AbciVendor.ResponseFlush)
+  rpc(:Info, AbciVendor.RequestInfo, AbciVendor.ResponseInfo)
+  rpc(:SetOption, AbciVendor.RequestSetOption, AbciVendor.ResponseSetOption)
+  rpc(:DeliverTx, AbciVendor.RequestDeliverTx, AbciVendor.ResponseDeliverTx)
+  rpc(:CheckTx, AbciVendor.RequestCheckTx, AbciVendor.ResponseCheckTx)
+  rpc(:Query, AbciVendor.RequestQuery, AbciVendor.ResponseQuery)
+  rpc(:Commit, AbciVendor.RequestCommit, AbciVendor.ResponseCommit)
+  rpc(:InitChain, AbciVendor.RequestInitChain, AbciVendor.ResponseInitChain)
+  rpc(:BeginBlock, AbciVendor.RequestBeginBlock, AbciVendor.ResponseBeginBlock)
+  rpc(:EndBlock, AbciVendor.RequestEndBlock, AbciVendor.ResponseEndBlock)
 end
 
 defmodule AbciVendor.ABCIApplication.Stub do
