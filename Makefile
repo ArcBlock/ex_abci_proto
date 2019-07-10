@@ -72,7 +72,7 @@ run:
 rebuild-proto:
 	@rm -rf $(PROTOS)/*.pb.ex
 	@protoc -I $(PROTOS) --elixir_out=plugins=grpc:$(PROTOS) $(PROTOS)/*.proto
-	@echo New protobuf files created for tendermint ABCI.
+	@echo "New protobuf files created for tendermint ABCI."
 
 
 rebuild-deps:
