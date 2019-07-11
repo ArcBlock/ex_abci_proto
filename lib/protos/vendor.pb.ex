@@ -3,8 +3,8 @@ defmodule AbciVendor.KVPair do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          key: String.t(),
-          value: String.t()
+          key: binary,
+          value: binary
         }
   defstruct [:key, :value]
 
@@ -18,8 +18,8 @@ defmodule AbciVendor.ProofOp do
 
   @type t :: %__MODULE__{
           type: String.t(),
-          key: String.t(),
-          data: String.t()
+          key: binary,
+          data: binary
         }
   defstruct [:type, :key, :data]
 
@@ -83,9 +83,9 @@ defmodule AbciVendor.ConsensusParams do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          block: AbciVendor.BlockParams.t(),
-          evidence: AbciVendor.EvidenceParams.t(),
-          validator: AbciVendor.ValidatorParams.t()
+          block: AbciVendor.BlockParams.t() | nil,
+          evidence: AbciVendor.EvidenceParams.t() | nil,
+          validator: AbciVendor.ValidatorParams.t() | nil
         }
   defstruct [:block, :evidence, :validator]
 
@@ -108,6 +108,20 @@ defmodule AbciVendor.LastCommitInfo do
   field :votes, 2, repeated: true, type: AbciVendor.VoteInfo
 end
 
+defmodule AbciVendor.Event do
+  @moduledoc false
+  use Protobuf, syntax: :proto3
+
+  @type t :: %__MODULE__{
+          type: String.t(),
+          attributes: [AbciVendor.KVPair.t()]
+        }
+  defstruct [:type, :attributes]
+
+  field :type, 1, type: :string
+  field :attributes, 2, repeated: true, type: AbciVendor.KVPair
+end
+
 defmodule AbciVendor.Version do
   @moduledoc false
   use Protobuf, syntax: :proto3
@@ -127,8 +141,8 @@ defmodule AbciVendor.BlockID do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          hash: String.t(),
-          parts_header: AbciVendor.PartSetHeader.t()
+          hash: binary,
+          parts_header: AbciVendor.PartSetHeader.t() | nil
         }
   defstruct [:hash, :parts_header]
 
@@ -142,7 +156,7 @@ defmodule AbciVendor.PartSetHeader do
 
   @type t :: %__MODULE__{
           total: integer,
-          hash: String.t()
+          hash: binary
         }
   defstruct [:total, :hash]
 
@@ -155,7 +169,7 @@ defmodule AbciVendor.Validator do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          address: String.t(),
+          address: binary,
           power: integer
         }
   defstruct [:address, :power]
@@ -169,7 +183,7 @@ defmodule AbciVendor.ValidatorUpdate do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          pub_key: AbciVendor.PubKey.t(),
+          pub_key: AbciVendor.PubKey.t() | nil,
           power: integer
         }
   defstruct [:pub_key, :power]
@@ -183,7 +197,7 @@ defmodule AbciVendor.VoteInfo do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          validator: AbciVendor.Validator.t(),
+          validator: AbciVendor.Validator.t() | nil,
           signed_last_block: boolean
         }
   defstruct [:validator, :signed_last_block]
@@ -198,7 +212,7 @@ defmodule AbciVendor.PubKey do
 
   @type t :: %__MODULE__{
           type: String.t(),
-          data: String.t()
+          data: binary
         }
   defstruct [:type, :data]
 
@@ -212,9 +226,9 @@ defmodule AbciVendor.Evidence do
 
   @type t :: %__MODULE__{
           type: String.t(),
-          validator: AbciVendor.Validator.t(),
+          validator: AbciVendor.Validator.t() | nil,
           height: integer,
-          time: Google.Protobuf.Timestamp.t(),
+          time: Google.Protobuf.Timestamp.t() | nil,
           total_voting_power: integer
         }
   defstruct [:type, :validator, :height, :time, :total_voting_power]
@@ -231,22 +245,22 @@ defmodule AbciVendor.Header do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          version: AbciVendor.Version.t(),
+          version: AbciVendor.Version.t() | nil,
           chain_id: String.t(),
           height: integer,
-          time: Google.Protobuf.Timestamp.t(),
+          time: Google.Protobuf.Timestamp.t() | nil,
           num_txs: integer,
           total_txs: integer,
-          last_block_id: AbciVendor.BlockID.t(),
-          last_commit_hash: String.t(),
-          data_hash: String.t(),
-          validators_hash: String.t(),
-          next_validators_hash: String.t(),
-          consensus_hash: String.t(),
-          app_hash: String.t(),
-          last_results_hash: String.t(),
-          evidence_hash: String.t(),
-          proposer_address: String.t()
+          last_block_id: AbciVendor.BlockID.t() | nil,
+          last_commit_hash: binary,
+          data_hash: binary,
+          validators_hash: binary,
+          next_validators_hash: binary,
+          consensus_hash: binary,
+          app_hash: binary,
+          last_results_hash: binary,
+          evidence_hash: binary,
+          proposer_address: binary
         }
   defstruct [
     :version,
@@ -301,6 +315,7 @@ defmodule AbciVendor.RequestFlush do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
+  @type t :: %__MODULE__{}
   defstruct []
 end
 
@@ -339,11 +354,11 @@ defmodule AbciVendor.RequestInitChain do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          time: Google.Protobuf.Timestamp.t(),
+          time: Google.Protobuf.Timestamp.t() | nil,
           chain_id: String.t(),
-          consensus_params: AbciVendor.ConsensusParams.t(),
+          consensus_params: AbciVendor.ConsensusParams.t() | nil,
           validators: [AbciVendor.ValidatorUpdate.t()],
-          app_state_bytes: String.t()
+          app_state_bytes: binary
         }
   defstruct [:time, :chain_id, :consensus_params, :validators, :app_state_bytes]
 
@@ -359,7 +374,7 @@ defmodule AbciVendor.RequestQuery do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          data: String.t(),
+          data: binary,
           path: String.t(),
           height: integer,
           prove: boolean
@@ -377,9 +392,9 @@ defmodule AbciVendor.RequestBeginBlock do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          hash: String.t(),
-          header: AbciVendor.Header.t(),
-          last_commit_info: AbciVendor.LastCommitInfo.t(),
+          hash: binary,
+          header: AbciVendor.Header.t() | nil,
+          last_commit_info: AbciVendor.LastCommitInfo.t() | nil,
           byzantine_validators: [AbciVendor.Evidence.t()]
         }
   defstruct [:hash, :header, :last_commit_info, :byzantine_validators]
@@ -395,7 +410,7 @@ defmodule AbciVendor.RequestCheckTx do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          tx: String.t()
+          tx: binary
         }
   defstruct [:tx]
 
@@ -407,7 +422,7 @@ defmodule AbciVendor.RequestDeliverTx do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          tx: String.t()
+          tx: binary
         }
   defstruct [:tx]
 
@@ -430,6 +445,7 @@ defmodule AbciVendor.RequestCommit do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
+  @type t :: %__MODULE__{}
   defstruct []
 end
 
@@ -484,6 +500,7 @@ defmodule AbciVendor.ResponseFlush do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
+  @type t :: %__MODULE__{}
   defstruct []
 end
 
@@ -496,7 +513,7 @@ defmodule AbciVendor.ResponseInfo do
           version: String.t(),
           app_version: non_neg_integer,
           last_block_height: integer,
-          last_block_app_hash: String.t()
+          last_block_app_hash: binary
         }
   defstruct [:data, :version, :app_version, :last_block_height, :last_block_app_hash]
 
@@ -528,7 +545,7 @@ defmodule AbciVendor.ResponseInitChain do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          consensus_params: AbciVendor.ConsensusParams.t(),
+          consensus_params: AbciVendor.ConsensusParams.t() | nil,
           validators: [AbciVendor.ValidatorUpdate.t()]
         }
   defstruct [:consensus_params, :validators]
@@ -546,9 +563,9 @@ defmodule AbciVendor.ResponseQuery do
           log: String.t(),
           info: String.t(),
           index: integer,
-          key: String.t(),
-          value: String.t(),
-          proof: AbciVendor.Proof.t(),
+          key: binary,
+          value: binary,
+          proof: AbciVendor.Proof.t() | nil,
           height: integer,
           codespace: String.t()
         }
@@ -570,11 +587,11 @@ defmodule AbciVendor.ResponseBeginBlock do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          tags: [AbciVendor.KVPair.t()]
+          events: [AbciVendor.Event.t()]
         }
-  defstruct [:tags]
+  defstruct [:events]
 
-  field :tags, 1, repeated: true, type: AbciVendor.KVPair
+  field :events, 1, repeated: true, type: AbciVendor.Event
 end
 
 defmodule AbciVendor.ResponseCheckTx do
@@ -583,15 +600,15 @@ defmodule AbciVendor.ResponseCheckTx do
 
   @type t :: %__MODULE__{
           code: non_neg_integer,
-          data: String.t(),
+          data: binary,
           log: String.t(),
           info: String.t(),
           gas_wanted: integer,
           gas_used: integer,
-          tags: [AbciVendor.KVPair.t()],
+          events: [AbciVendor.Event.t()],
           codespace: String.t()
         }
-  defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :tags, :codespace]
+  defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :events, :codespace]
 
   field :code, 1, type: :uint32
   field :data, 2, type: :bytes
@@ -599,7 +616,7 @@ defmodule AbciVendor.ResponseCheckTx do
   field :info, 4, type: :string
   field :gas_wanted, 5, type: :int64
   field :gas_used, 6, type: :int64
-  field :tags, 7, repeated: true, type: AbciVendor.KVPair
+  field :events, 7, repeated: true, type: AbciVendor.Event
   field :codespace, 8, type: :string
 end
 
@@ -609,15 +626,15 @@ defmodule AbciVendor.ResponseDeliverTx do
 
   @type t :: %__MODULE__{
           code: non_neg_integer,
-          data: String.t(),
+          data: binary,
           log: String.t(),
           info: String.t(),
           gas_wanted: integer,
           gas_used: integer,
-          tags: [AbciVendor.KVPair.t()],
+          events: [AbciVendor.Event.t()],
           codespace: String.t()
         }
-  defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :tags, :codespace]
+  defstruct [:code, :data, :log, :info, :gas_wanted, :gas_used, :events, :codespace]
 
   field :code, 1, type: :uint32
   field :data, 2, type: :bytes
@@ -625,7 +642,7 @@ defmodule AbciVendor.ResponseDeliverTx do
   field :info, 4, type: :string
   field :gas_wanted, 5, type: :int64
   field :gas_used, 6, type: :int64
-  field :tags, 7, repeated: true, type: AbciVendor.KVPair
+  field :events, 7, repeated: true, type: AbciVendor.Event
   field :codespace, 8, type: :string
 end
 
@@ -635,14 +652,14 @@ defmodule AbciVendor.ResponseEndBlock do
 
   @type t :: %__MODULE__{
           validator_updates: [AbciVendor.ValidatorUpdate.t()],
-          consensus_param_updates: AbciVendor.ConsensusParams.t(),
-          tags: [AbciVendor.KVPair.t()]
+          consensus_param_updates: AbciVendor.ConsensusParams.t() | nil,
+          events: [AbciVendor.Event.t()]
         }
-  defstruct [:validator_updates, :consensus_param_updates, :tags]
+  defstruct [:validator_updates, :consensus_param_updates, :events]
 
   field :validator_updates, 1, repeated: true, type: AbciVendor.ValidatorUpdate
   field :consensus_param_updates, 2, type: AbciVendor.ConsensusParams
-  field :tags, 3, repeated: true, type: AbciVendor.KVPair
+  field :events, 3, repeated: true, type: AbciVendor.Event
 end
 
 defmodule AbciVendor.ResponseCommit do
@@ -650,7 +667,7 @@ defmodule AbciVendor.ResponseCommit do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          data: String.t()
+          data: binary
         }
   defstruct [:data]
 
@@ -685,6 +702,7 @@ defmodule AbciVendor.RequestPing do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
+  @type t :: %__MODULE__{}
   defstruct []
 end
 
@@ -693,7 +711,7 @@ defmodule AbciVendor.RequestBroadcastTx do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          tx: String.t()
+          tx: binary
         }
   defstruct [:tx]
 
@@ -704,6 +722,7 @@ defmodule AbciVendor.ResponsePing do
   @moduledoc false
   use Protobuf, syntax: :proto3
 
+  @type t :: %__MODULE__{}
   defstruct []
 end
 
@@ -712,8 +731,8 @@ defmodule AbciVendor.ResponseBroadcastTx do
   use Protobuf, syntax: :proto3
 
   @type t :: %__MODULE__{
-          check_tx: AbciVendor.ResponseCheckTx.t(),
-          deliver_tx: AbciVendor.ResponseDeliverTx.t()
+          check_tx: AbciVendor.ResponseCheckTx.t() | nil,
+          deliver_tx: AbciVendor.ResponseDeliverTx.t() | nil
         }
   defstruct [:check_tx, :deliver_tx]
 
