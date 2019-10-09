@@ -34,7 +34,7 @@ defmodule ExAbciProto.MixProject do
   defp deps do
     [
       {:google_protos, "~> 0.1"},
-      {:grpc, "~> 0.3"},
+      {:grpc, "~> 0.4.0-alpha.2"},
 
       # dev and test
       {:ex_doc, "~> 0.19.0", only: [:dev, :test], runtime: false}
